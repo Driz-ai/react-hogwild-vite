@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import App from "../components/App";
+// import App from "../components/App";
 import hogs from "../porkers_data";
+import App from "../App.jsx";
 
 describe("Hog App", () => {
   it("displays a tile for each hog on load", () => {
@@ -72,7 +73,7 @@ describe("Hog App", () => {
     expect(screen.queryByText(sortedHogsByName[0].name)).not.toBeInTheDocument();
   });
 
-  it("adds a new hog via the form", () => {
+  it("adds a new hog via the form", async () => {
     render(<App />);
     const nameInput = screen.getByLabelText("Name:");
     const weightInput = screen.getByLabelText("Weight:");
@@ -81,12 +82,12 @@ describe("Hog App", () => {
     const addButton = screen.getByText("Add Hog");
 
     fireEvent.change(nameInput, { target: { value: "New Hog" } });
-    fireEvent.change(weightInput, { target: { value: 100 } });
+    fireEvent.change(weightInput, { target: { value: "100" } });
     fireEvent.change(specialtyInput, { target: { value: "Dancing" } });
     fireEvent.click(greasedCheckbox);
     fireEvent.click(addButton);
 
-    expect(screen.getByText("New Hog")).toBeInTheDocument();
+    expect(await screen.findByText("New Hog")).toBeInTheDocument();
   });
 
   it("renders hog tiles using Semantic Cards", () => {
